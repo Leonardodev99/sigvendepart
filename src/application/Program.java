@@ -53,10 +53,24 @@ public class Program {
 		int id = sc.nextInt();
 		sellerDao.deleteById(id);
 		System.out.println("Delete completed");*/
-		System.out.println("\n === Test 7: departament insert ===");
+		/*System.out.println("\n === Test 7: departament insert ===");
 		Departament newDepartament = new Departament(null, "Finacial");
 		departamentDao.insert(newDepartament);
 		System.out.println("Inserted! New id = "+newDepartament.getId());
+		
+		System.out.println("\n === Test 8: seller update ===");
+		 deartament = 
+		
+		/*System.out.println("\n === Test 9: seller delete ===");
+		System.out.print("Enter id for delete test: ");
+		int id = sc.nextInt();*/
+		
+		System.out.println("\n === Test 10: departament findById ===");
+		
+		Departament departament = departamentDao.findById(2);
+		
+		System.out.println(departament);
+
 		
 		sc.close();
 

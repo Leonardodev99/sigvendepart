@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DbException;
@@ -53,25 +54,93 @@ public class DepartamentDaoJDBC implements DepartamentDao {
 
 	@Override
 	public void update(Departament obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"UPDATE departament "
+					+"SET name = ? "
+					+"WHERE id = ?",
+					Statement.RETURN_GENERATED_KEYS
+					);
+			st.setString(1, obj.getName());
+			st.executeUpdate();
+			
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
 		
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"delete FROM departament "
+					+"WHERE id = ?"
+					);
+			st.setInt(1, id);
+			int rowsAffected = st.executeUpdate();
+			if(rowsAffected==0) {
+				throw new DbException("Id does not exist");
+			}
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
 		
 	}
 
 	@Override
 	public Departament findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT departament.* "
+					+ "FROM departament "
+					+ "WHERE id =?"
+					);
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if(rs.next()) {
+				Departament dep = instantiateDepartament(rs);
+				return dep;
+			}
+			return null;
+			
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		
+	}
+	private Departament instantiateDepartament (ResultSet rs) throws SQLException {
+		Departament obj = new Departament();
+		obj.setId(rs.getInt("id"));
+		obj.setName(rs.getString("name"));
+		return obj;
+		
 	}
 
 	@Override
 	public List<Departament> findAll() {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT departament.* "
+					+ "FROM departament "
+					+ "ORDER BY name"
+					);
+			rs = st.executeQuery();
+			List<Departament> list = new ArrayList<>();
+			
+		}
+		catch(SQLException e ) {
+			throw new DbException(e.getMessage());
+		}
 		return null;
 	}
 
