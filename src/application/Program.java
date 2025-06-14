@@ -1,21 +1,11 @@
 package application;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Scanner;
 
 import Model.dao.CategoryDao;
 import Model.dao.DaoFactory;
 import Model.entities.Category;
-import Model.entities.Customer;
-import Model.entities.Employee;
-import Model.entities.Payment;
-import Model.entities.Product;
-import Model.entities.Sale;
-import Model.entities.SaleItem;
-import Model.entities.StockMovement;
-import Model.entities.Supplier;
 
 
 public class Program {
@@ -24,9 +14,37 @@ public class Program {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		Category category = new Category(1, "Medicamentos");
-		
 		CategoryDao categoryDao = DaoFactory.createCategoryDao();
+		
+		System.out.println("=== TESTE 1: category findById ====");
+		Category category = categoryDao.findById(2);
+		
+		System.out.println(category);
+		
+		System.out.println("\n=== TESTE 2: category findAll ====");
+		List<Category> list = categoryDao.findAll();
+		for (Category obj : list) {
+			System.out.println(obj);
+		}
+		
+		System.out.println("\n=== TESTE 3: category insert ====");
+		/*Category newCategory = new Category(null, "Materiais de Enfermaria");
+		categoryDao.insert(newCategory);
+		System.out.println("Insert! New id"+ newCategory.getId());*/
+		
+		System.out.println("\n=== TESTE 4: category update ====");
+		/*category = categoryDao.findById(9);
+		category.setName("Produtos dentários");
+		categoryDao.update(category);
+		System.out.println("Update completed");*/
+		
+		System.out.println("\n=== TESTE 5: category dalete ====");
+		System.out.println("Enter id for delete test: ");
+		int id = sc.nextInt();
+		categoryDao.deleteById(id);
+		System.out.println("Delete completed");
+		
+		/*Category category = new Category(1, "Medicamentos");
 		
 		// Cliente
 				Customer customer = new Customer(
@@ -108,32 +126,9 @@ public class Program {
 				LocalDateTime.now()
 			);
 
-			System.out.println(payment);
+			System.out.println(payment);*/
 
-		
-	/*	Connection conn = null;
-		Statement st = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = DB.getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery("select * from Supplies");
-			while (rs.next()) {
-				System.out.println(rs.getInt("id_supplier") + ", " + rs.getString("name")
-				+ ", " + rs.getString("nif") + ", " + rs.getString("phone") + ", "
-				+ rs.getString("cel") + ", "  + rs.getString("email") + ", " + 
-				rs.getString("address") + ", " + rs.getString("site"));
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-		finally {
-			DB.closeStatement(st);
-			DB.closeResultSet(rs);
-			DB.closeConnection();
-		}*/
+
 		sc.close();
 
 	}
