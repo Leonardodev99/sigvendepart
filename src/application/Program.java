@@ -1,10 +1,8 @@
 package application;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Scanner;
 
-import Model.entities.Employee;
+import Model.entities.Supplier;
 
 
 public class Program {
@@ -13,9 +11,22 @@ public class Program {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		Employee obj = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
+		/*Employee obj = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
 	
-		System.out.println(obj);
+		System.out.println(obj);*/
+		Supplier supplier = new Supplier(
+			    1,
+			    "Antonio Farmaco",
+			    "1234ASW45",
+			    "933456789",
+			    "911223456",
+			    "antonio@gmail.com",
+			    "Rua 11 de Novembro",
+			    "www.antonio.com"
+			);
+
+			System.out.println(supplier);
+
 		
 	/*	Connection conn = null;
 		Statement st = null;
