@@ -1,14 +1,11 @@
 package application;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Scanner;
 
-import Model.entities.Category;
-import Model.entities.Customer;
-import db.DB;
+import Model.entities.Employee;
+
 
 public class Program {
 
@@ -16,8 +13,8 @@ public class Program {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		//Category obj = new Category(9, "");
-		Customer obj = new Customer(3, "Tiago White", "Brigada", "tiago@gmail.com", "921567890");
+		Employee obj = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
+	
 		System.out.println(obj);
 		
 	/*	Connection conn = null;
