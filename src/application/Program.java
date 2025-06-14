@@ -1,7 +1,11 @@
 package application;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Scanner;
 
+import Model.entities.Category;
+import Model.entities.Product;
 import Model.entities.Supplier;
 
 
@@ -11,9 +15,11 @@ public class Program {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		/*Employee obj = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
+		Category category = new Category(1, "Medicamentos");
+		
+		//Employee obj = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
 	
-		System.out.println(obj);*/
+		System.out.println(category);
 		Supplier supplier = new Supplier(
 			    1,
 			    "Antonio Farmaco",
@@ -26,6 +32,19 @@ public class Program {
 			);
 
 			System.out.println(supplier);
+			
+			Product product = new Product(
+					1,
+					"Paracetamol",
+					LocalDate.of(2023, 12, 22),
+					LocalDate.of(2026, 12, 22),
+					45,
+					new BigDecimal("300.00"),
+					"Marca indiana",
+					category,
+					supplier
+				);
+			System.out.println(product);
 
 		
 	/*	Connection conn = null;
