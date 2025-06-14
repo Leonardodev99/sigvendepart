@@ -32,7 +32,10 @@ public class Category implements Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+	    if (name == null || name.trim().isEmpty()) {
+	        throw new IllegalArgumentException("O nome da categoria não pode estar vazio.");
+	    }
+	    this.name = name;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 import Model.entities.Category;
+import Model.entities.Customer;
 import db.DB;
 
 public class Program {
@@ -15,7 +16,8 @@ public class Program {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		Category obj = new Category(9, "Produtos de Enfermaria");
+		//Category obj = new Category(9, "");
+		Customer obj = new Customer(3, "Tiago White", "Brigada", "tiago@gmail.com", "921567890");
 		System.out.println(obj);
 		
 	/*	Connection conn = null;
