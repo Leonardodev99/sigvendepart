@@ -2,10 +2,15 @@ package application;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 import Model.entities.Category;
+import Model.entities.Customer;
+import Model.entities.Employee;
 import Model.entities.Product;
+import Model.entities.Sale;
+import Model.entities.StockMovement;
 import Model.entities.Supplier;
 
 
@@ -17,7 +22,16 @@ public class Program {
 		
 		Category category = new Category(1, "Medicamentos");
 		
-		//Employee obj = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
+		// Cliente
+				Customer customer = new Customer(
+					1,
+					"Anna Black",
+					"Rua 12 de julho",
+					"anna@gmail.com",
+					"922684456"
+				);
+		
+		Employee employee = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
 	
 		System.out.println(category);
 		Supplier supplier = new Supplier(
@@ -45,6 +59,27 @@ public class Program {
 					supplier
 				);
 			System.out.println(product);
+			
+			// Movimentação de entrada
+			StockMovement movement = new StockMovement(
+				1,
+				product,
+				"entry",
+				20,
+				LocalDateTime.now()
+			);
+			System.out.println(movement);
+			
+			// Venda
+			Sale sale = new Sale(
+				1,
+				customer,
+				employee,
+				LocalDate.of(2025, 2, 15),
+				new BigDecimal("600.00")
+			);
+
+			System.out.println(sale);
 
 		
 	/*	Connection conn = null;

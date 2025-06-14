@@ -89,6 +89,8 @@ public class StockMovement implements Serializable {
 
 	@Override
 	public String toString() {
-		return "StockMovement [id=" + id + ", type=" + type + ", quantity=" + quantity + ", date=" + date + "]";
+		return "StockMovement [id=" + id + ", product=" + product + ", type=" + type + ", quantity=" + quantity
+				+ ", date=" + date + "]";
 	}
+
 }
