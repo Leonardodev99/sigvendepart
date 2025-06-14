@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import Model.entities.Category;
 import db.DB;
 
 public class Program {
@@ -14,7 +15,10 @@ public class Program {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		Connection conn = null;
+		Category obj = new Category(9, "Produtos de Enfermaria");
+		System.out.println(obj);
+		
+	/*	Connection conn = null;
 		Statement st = null;
 		ResultSet rs = null;
 		
@@ -36,7 +40,7 @@ public class Program {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 			DB.closeConnection();
-		}
+		}*/
 		sc.close();
 
 	}
