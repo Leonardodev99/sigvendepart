@@ -8,6 +8,7 @@ import java.util.Scanner;
 import Model.entities.Category;
 import Model.entities.Customer;
 import Model.entities.Employee;
+import Model.entities.Payment;
 import Model.entities.Product;
 import Model.entities.Sale;
 import Model.entities.SaleItem;
@@ -92,6 +93,18 @@ public class Program {
 			);
 
 			System.out.println(item);
+			
+			// Pagamento
+			Payment payment = new Payment(
+				1,
+				sale,
+				new BigDecimal("600.00"),
+				"cash",
+				"paid",
+				LocalDateTime.now()
+			);
+
+			System.out.println(payment);
 
 		
 	/*	Connection conn = null;
