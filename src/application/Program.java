@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import Model.dao.CategoryDao;
+import Model.dao.DaoFactory;
 import Model.entities.Category;
 import Model.entities.Customer;
 import Model.entities.Employee;
@@ -23,6 +25,8 @@ public class Program {
 		Scanner sc = new Scanner(System.in);
 		
 		Category category = new Category(1, "Medicamentos");
+		
+		CategoryDao categoryDao = DaoFactory.createCategoryDao();
 		
 		// Cliente
 				Customer customer = new Customer(
