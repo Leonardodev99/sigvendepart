@@ -10,6 +10,7 @@ import Model.entities.Customer;
 import Model.entities.Employee;
 import Model.entities.Product;
 import Model.entities.Sale;
+import Model.entities.SaleItem;
 import Model.entities.StockMovement;
 import Model.entities.Supplier;
 
@@ -80,6 +81,17 @@ public class Program {
 			);
 
 			System.out.println(sale);
+			
+			// Item da venda
+			SaleItem item = new SaleItem(
+				1,
+				sale,
+				product,
+				2,
+				new BigDecimal("300.00")
+			);
+
+			System.out.println(item);
 
 		
 	/*	Connection conn = null;
