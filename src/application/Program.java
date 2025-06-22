@@ -1,11 +1,28 @@
 package application;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
 import Model.dao.CategoryDao;
+import Model.dao.CustomerDao;
 import Model.dao.DaoFactory;
+import Model.dao.EmployeeDao;
+import Model.dao.PaymentDao;
+import Model.dao.ProductDao;
+import Model.dao.SaleDao;
+import Model.dao.SaleItemDao;
+import Model.dao.StockMovementDao;
+import Model.dao.SupplierDao;
 import Model.entities.Category;
+import Model.entities.Customer;
+import Model.entities.Employee;
+import Model.entities.Payment;
+import Model.entities.Product;
+import Model.entities.Sale;
+import Model.entities.SaleItem;
+import Model.entities.StockMovement;
+import Model.entities.Supplier;
 
 
 public class Program {
@@ -15,74 +32,90 @@ public class Program {
 		Scanner sc = new Scanner(System.in);
 		
 		CategoryDao categoryDao = DaoFactory.createCategoryDao();
-		
-		System.out.println("=== TESTE 1: category findById ====");
 		Category category = categoryDao.findById(2);
 		
-		System.out.println(category);
 		
-		System.out.println("\n=== TESTE 2: category findAll ====");
-		List<Category> list = categoryDao.findAll();
-		for (Category obj : list) {
+		CustomerDao customerDao = DaoFactory.createCustomerDao();
+		Customer customer = customerDao.findById(2);
+		
+		EmployeeDao employeeDao = DaoFactory.createEmployeeDao();
+		Employee employee = employeeDao.findById(2);
+		
+		SupplierDao supplierDao = DaoFactory.createSupplierDao();
+		Supplier supplier = supplierDao.findById(1);
+		
+		ProductDao productDao = DaoFactory.createProductDao();
+		System.out.println("\n=== TESTE 1: product findById ====");
+		Product product = productDao.findById(1);
+		
+		SaleDao saleDao = DaoFactory.createSaleDao();
+		System.out.println("\n=== TESTE 1: sale findById ====");
+		Sale sale = saleDao.findById(1);
+		
+		System.out.println("\n=== TESTE 1: sale-item findById ====");
+		SaleItemDao saleItemDao = DaoFactory.createSaleItemDao();
+		SaleItem saleItem = saleItemDao.findById(2);
+		
+		System.out.println("\n=== TESTE 1: payment findById ====");
+		PaymentDao paymentDao = DaoFactory.createPaymentDao();
+		Payment payment = paymentDao.findById(2);
+		
+		System.out.println("\n=== TESTE 1: Stock Movement findById ====");
+		StockMovementDao stockMovementDao = DaoFactory.createStockMovementDao();
+		StockMovement stockMovement = stockMovementDao.findById(1);
+		System.out.println(stockMovement);
+		
+		System.out.println("\n=== TESTE 2: Stock Movement findAll ====");
+		List<StockMovement> list = stockMovementDao.findAll();
+		for(StockMovement obj : list) {
 			System.out.println(obj);
 		}
 		
-		System.out.println("\n=== TESTE 3: category insert ====");
-		/*Category newCategory = new Category(null, "Materiais de Enfermaria");
-		categoryDao.insert(newCategory);
-		System.out.println("Insert! New id"+ newCategory.getId());*/
-		
-		System.out.println("\n=== TESTE 4: category update ====");
-		/*category = categoryDao.findById(9);
-		category.setName("Produtos dentários");
-		categoryDao.update(category);
-		System.out.println("Update completed");*/
-		
-		System.out.println("\n=== TESTE 5: category dalete ====");
-		System.out.println("Enter id for delete test: ");
+		System.out.println("\n=== TESTE 5: Stock Movement delete ====");
+		System.out.println("Enter with id: ");
 		int id = sc.nextInt();
-		categoryDao.deleteById(id);
-		System.out.println("Delete completed");
+		stockMovementDao.deleteById(id);
+		System.out.println("Done, delete completed!");
+		/*System.out.println("\n=== TESTE 4: Stock Movement update ====");
+		stockMovement = stockMovementDao.findById(3);
+		stockMovement.setQuantity(5);
+		stockMovementDao.update(stockMovement);
+		System.out.println("Done, data updated!");
 		
-		/*Category category = new Category(1, "Medicamentos");
+		System.out.println("\n=== TESTE 3: Stock Movement insert ====");
+		stockMovement = new StockMovement(null, product, "exit", 10, LocalDateTime.now());
+		stockMovementDao.insert(stockMovement);
+		System.out.println(stockMovement);
 		
-		// Cliente
-				Customer customer = new Customer(
-					1,
-					"Anna Black",
-					"Rua 12 de julho",
-					"anna@gmail.com",
-					"922684456"
-				);
 		
-		Employee employee = new Employee(1, "Arnald Black", "donalt@gmail.com", "0099753LA02112", "Rangel", LocalDate.of(1990, 5, 13), "931456789", 'M', LocalDate.of(2024, 6, 1), new BigDecimal("479000"), "123ASDF", "123456");
-	
-		System.out.println(category);
-		Supplier supplier = new Supplier(
-			    1,
-			    "Antonio Farmaco",
-			    "1234ASW45",
-			    "933456789",
-			    "911223456",
-			    "antonio@gmail.com",
-			    "Rua 11 de Novembro",
-			    "www.antonio.com"
-			);
+		System.out.println(payment);
+		
+		System.out.println("\n=== TESTE 2: payment findAll ====");
+		List<Payment> list = paymentDao.findAll();
+		for(Payment obj : list) {
+			System.out.println(obj);
+		}
+		
+		System.out.println("\n=== TESTE 5: payment Delete ====");
+		System.out.println("Enter with id: ");
+		int id = sc.nextInt();
+		paymentDao.deleteById(id);
+		System.out.println("Delte completed");
+		
+		System.out.println("\n=== TESTE 4: payment update ====");
+		payment = paymentDao.findById(3);
+		payment.setValuePay(new BigDecimal("2500.00"));
+		paymentDao.update(payment);
+		System.out.println("Done, data updated!");
+		System.out.println("\n=== TESTE 3: payment insert ====");
+		payment = new Payment(null, sale, new BigDecimal("2000.00"),
+				"card",
+				"pending",
+				LocalDateTime.now());
+		paymentDao.insert(payment);
+		System.out.println(payment);
+		
 
-			System.out.println(supplier);
-			
-			Product product = new Product(
-					1,
-					"Paracetamol",
-					LocalDate.of(2023, 12, 22),
-					LocalDate.of(2026, 12, 22),
-					45,
-					new BigDecimal("300.00"),
-					"Marca indiana",
-					category,
-					supplier
-				);
-			System.out.println(product);
 			
 			// Movimentação de entrada
 			StockMovement movement = new StockMovement(
@@ -93,28 +126,6 @@ public class Program {
 				LocalDateTime.now()
 			);
 			System.out.println(movement);
-			
-			// Venda
-			Sale sale = new Sale(
-				1,
-				customer,
-				employee,
-				LocalDate.of(2025, 2, 15),
-				new BigDecimal("600.00")
-			);
-
-			System.out.println(sale);
-			
-			// Item da venda
-			SaleItem item = new SaleItem(
-				1,
-				sale,
-				product,
-				2,
-				new BigDecimal("300.00")
-			);
-
-			System.out.println(item);
 			
 			// Pagamento
 			Payment payment = new Payment(

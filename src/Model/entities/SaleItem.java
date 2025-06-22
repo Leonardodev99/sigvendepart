@@ -78,7 +78,10 @@ public class SaleItem implements Serializable {
 	}
 
 	public BigDecimal getSubtotal() {
-		return subtotal;
+		if (unitPrice != null && quantity != null) {
+			return unitPrice.multiply(BigDecimal.valueOf(quantity));
+		}
+		return BigDecimal.ZERO;
 	}
 
 	@Override
