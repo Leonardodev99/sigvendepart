@@ -10,4 +10,5 @@ public interface ProductDao {
 	void deleteById(int id);
 	Product findById(int id);
 	List<Product> findAll();
+	List<Product> findProductsExpiringSoon();
 }

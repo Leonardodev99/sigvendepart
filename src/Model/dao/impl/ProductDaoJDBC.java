@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -199,4 +200,53 @@ public class ProductDaoJDBC implements ProductDao {
 		obj.setSupplier(supplier);
 		return obj;
 	}
+	
+	private Product instantiateProduct(ResultSet rs) throws SQLException {
+		Product obj = new Product();
+		obj.setId(rs.getInt("id_product"));
+		obj.setName(rs.getString("name"));
+		obj.setDateManufacture(rs.getDate("date_manufacture").toLocalDate());
+		obj.setDateExpiration(rs.getDate("date_expiration").toLocalDate());
+		obj.setQuantityStock(rs.getInt("quantity_stock"));
+		obj.setPrice(rs.getBigDecimal("price"));
+		obj.setDescription(rs.getString("description"));
+		// Deixa category e supplier nulos nesse método simplificado
+		return obj;
+	}
+
+	
+	@Override
+	public List<Product> findProductsExpiringSoon() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+				"SELECT * FROM products " +
+				"WHERE date_expiration BETWEEN ? AND ? " +
+				"ORDER BY date_expiration ASC"
+			);
+
+			LocalDate today = LocalDate.now();
+			LocalDate limit = today.plusDays(14);
+
+			st.setDate(1, Date.valueOf(today));
+			st.setDate(2, Date.valueOf(limit));
+
+			rs = st.executeQuery();
+
+			List<Product> list = new ArrayList<>();
+			while (rs.next()) {
+				Product p = instantiateProduct(rs);
+				list.add(p);
+			}
+			return list;
+		} catch (SQLException e) {
+			throw new DbException("Erro ao buscar produtos prestes a expirar: " + e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+
 }

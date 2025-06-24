@@ -27,7 +27,7 @@ public class Program {
 		Product prod2 = productDao.findById(2);
 
 		SaleDao saleDao = DaoFactory.createSaleDao();
-		SaleItemDao saleItemDao = DaoFactory.createSaleItemDao();
+		/*SaleItemDao saleItemDao = DaoFactory.createSaleItemDao();
 
 		// Criar nova venda
 		System.out.println("\n=== TESTE: Inserir nova venda com vários itens ===");
@@ -54,7 +54,16 @@ public class Program {
 		paymentDao.insert(pagamento);
 
 		System.out.println("Pagamento registrado:");
-		System.out.println(pagamento);
+		System.out.println(pagamento);*/
+		
+		System.out.println("\n=== PRODUTOS PRESTES A EXPIRAR (próximas 2 semanas) ===");
+		List<Product> expiring = productDao.findProductsExpiringSoon();
+		if (expiring.isEmpty()) {
+			System.out.println("Nenhum produto prestes a vencer.");
+		} else {
+			expiring.forEach(p -> System.out.printf("Produto: %s | Validade: %s\n", p.getName(), p.getDateExpiration()));
+		}
+
 
 		// Relatórios
 		/*System.out.println("\n=== RELATÓRIO DE VENDAS DO DIA ===");
