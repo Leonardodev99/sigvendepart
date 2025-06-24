@@ -37,6 +37,15 @@ public class StockMovementDaoJDBC implements StockMovementDao {
 					obj.setId(rs.getInt(1));
 				}
 				DB.closeResultSet(rs);
+
+				
+				Product product = obj.getProduct();
+				if (obj.getType().equals("entry")) {
+					product.setQuantityStock(product.getQuantityStock() + obj.getQuantity());
+				} else {
+					product.setQuantityStock(product.getQuantityStock() - obj.getQuantity());
+				}
+				new ProductDaoJDBC(conn).update(product);
 			} else {
 				throw new DbException("Erro: nenhuma linha inserida.");
 			}
@@ -46,6 +55,7 @@ public class StockMovementDaoJDBC implements StockMovementDao {
 			DB.closeStatement(st);
 		}
 	}
+
 
 	@Override
 	public void update(StockMovement obj) {

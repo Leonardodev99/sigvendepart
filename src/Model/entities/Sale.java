@@ -3,6 +3,8 @@ package Model.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Sale implements Serializable {
@@ -13,17 +15,17 @@ public class Sale implements Serializable {
 	private Customer customer;
 	private Employee employee;
 	private LocalDate dateSale;
-	private BigDecimal total;
+	private BigDecimal totalBanco;
+	private List<SaleItem> items = new ArrayList<>();
 
 	public Sale() {
 	}
 
-	public Sale(Integer id, Customer customer, Employee employee, LocalDate dateSale, BigDecimal total) {
+	public Sale(Integer id, Customer customer, Employee employee, LocalDate dateSale) {
 		this.id = id;
 		this.customer = customer;
 		this.employee = employee;
 		this.dateSale = dateSale;
-		this.total = total;
 	}
 
 	// Getters e Setters
@@ -59,13 +61,36 @@ public class Sale implements Serializable {
 		this.dateSale = dateSale;
 	}
 
-	public BigDecimal getTotal() {
-		return total;
+	public List<SaleItem> getItems() {
+		return items;
 	}
 
-	public void setTotal(BigDecimal total) {
-		this.total = total;
+	public void addItem(SaleItem item) {
+		items.add(item);
 	}
+
+	public void removeItem(SaleItem item) {
+		items.remove(item);
+	}
+	
+	public BigDecimal getTotalBanco() {
+		return totalBanco;
+	}
+
+	public void setTotalBanco(BigDecimal totalBanco) {
+		this.totalBanco = totalBanco;
+	}
+
+	// Calcula total com base nos itens da venda
+	public BigDecimal getTotal() {
+		if (items == null || items.isEmpty()) {
+			return totalBanco != null ? totalBanco : BigDecimal.ZERO;
+		}
+		return items.stream()
+			.map(SaleItem::getSubtotal)
+			.reduce(BigDecimal.ZERO, BigDecimal::add);
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -74,17 +99,17 @@ public class Sale implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null || getClass() != obj.getClass())
-			return false;
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
 		Sale other = (Sale) obj;
 		return Objects.equals(id, other.id);
 	}
 
 	@Override
 	public String toString() {
-		return "Sale [id=" + id + ", customer=" + customer.getName() + ", employee=" + employee.getName()
-				+ ", dateSale=" + dateSale + ", total=" + total + "]";
+		return "Sale [id=" + id + ", customer=" + customer.getName() +
+		       ", employee=" + employee.getName() +
+		       ", dateSale=" + dateSale +
+		       ", total=" + getTotal() + "]";
 	}
 }

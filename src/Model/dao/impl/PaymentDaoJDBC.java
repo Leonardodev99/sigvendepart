@@ -23,7 +23,30 @@ public class PaymentDaoJDBC implements PaymentDao {
 	@Override
 	public void insert(Payment obj) {
 		PreparedStatement st = null;
+
 		try {
+			// Se valor de pagamento for nulo, buscar o total da venda do banco
+			if (obj.getValuePay() == null && obj.getSale() != null && obj.getSale().getId() != null) {
+				PreparedStatement stTotal = null;
+				ResultSet rsTotal = null;
+				try {
+					stTotal = conn.prepareStatement("SELECT total FROM sales WHERE id_sale = ?");
+					stTotal.setInt(1, obj.getSale().getId());
+					rsTotal = stTotal.executeQuery();
+					if (rsTotal.next()) {
+						obj.setValuePay(rsTotal.getBigDecimal("total"));
+					} else {
+						obj.setValuePay(BigDecimal.ZERO);
+					}
+				} catch (SQLException e) {
+					throw new DbException("Erro ao buscar total da venda: " + e.getMessage());
+				} finally {
+					DB.closeResultSet(rsTotal);
+					DB.closeStatement(stTotal);
+				}
+			}
+
+			// Inserção do pagamento
 			st = conn.prepareStatement(
 				"INSERT INTO payments (id_sale, value_pay, method_payment, status_payment, date_payment) " +
 				"VALUES (?, ?, ?, ?, ?)",
@@ -33,7 +56,7 @@ public class PaymentDaoJDBC implements PaymentDao {
 			st.setBigDecimal(2, obj.getValuePay());
 			st.setString(3, obj.getMethodPayment());
 			st.setString(4, obj.getStatusPayment());
-			st.setTimestamp(5, Timestamp.valueOf(obj.getDatePayment()));
+			st.setTimestamp(5, Timestamp.valueOf(obj.getDatePayment() != null ? obj.getDatePayment() : LocalDateTime.now()));
 
 			int rows = st.executeUpdate();
 			if (rows > 0) {
@@ -51,6 +74,7 @@ public class PaymentDaoJDBC implements PaymentDao {
 			DB.closeStatement(st);
 		}
 	}
+
 
 	@Override
 	public void update(Payment obj) {

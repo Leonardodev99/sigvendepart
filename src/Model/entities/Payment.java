@@ -23,10 +23,11 @@ public class Payment implements Serializable {
 		this.id = id;
 		this.sale = sale;
 		this.valuePay = valuePay;
-		this.methodPayment = methodPayment;
-		this.statusPayment = statusPayment;
-		this.datePayment = datePayment;
+		this.methodPayment = (methodPayment == null) ? "cash" : methodPayment;
+		this.statusPayment = (statusPayment == null) ? "paid" : statusPayment;
+		this.datePayment = LocalDateTime.now();
 	}
+
 
 	// Getters e Setters
 	public Integer getId() {

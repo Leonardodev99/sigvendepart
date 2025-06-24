@@ -12,6 +12,7 @@ import Model.dao.SaleItemDao;
 import Model.entities.Product;
 import Model.entities.Sale;
 import Model.entities.SaleItem;
+import Model.entities.StockMovement;
 import db.DB;
 import db.DbException;
 
@@ -27,13 +28,21 @@ public class SaleItemDaoJDBC implements SaleItemDao {
 	public void insert(SaleItem obj) {
 		PreparedStatement st = null;
 		try {
+			// Verificar se há estoque suficiente
+			Product product = obj.getProduct();
+			int estoqueAtual = product.getQuantityStock();
+			if (estoqueAtual < obj.getQuantity()) {
+				throw new IllegalStateException("Estoque insuficiente para o produto: " + product.getName());
+			}
+
+			// Inserção no banco
 			st = conn.prepareStatement(
 				"INSERT INTO sale_items (id_sale, id_product, quantity, unit_price, subtotal) " +
 				"VALUES (?, ?, ?, ?, ?)",
 				Statement.RETURN_GENERATED_KEYS
 			);
 			st.setInt(1, obj.getSale().getId());
-			st.setInt(2, obj.getProduct().getId());
+			st.setInt(2, product.getId());
 			st.setInt(3, obj.getQuantity());
 			st.setBigDecimal(4, obj.getUnitPrice());
 			st.setBigDecimal(5, obj.getSubtotal());
@@ -48,6 +57,17 @@ public class SaleItemDaoJDBC implements SaleItemDao {
 			} else {
 				throw new DbException("Erro: nenhuma linha inserida.");
 			}
+
+			// Baixa no estoque
+			StockMovement movement = new StockMovement(
+				null,
+				product,
+				"exit",
+				obj.getQuantity(),
+				java.time.LocalDateTime.now()
+			);
+			new StockMovementDaoJDBC(conn).insert(movement);
+
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
@@ -55,10 +75,27 @@ public class SaleItemDaoJDBC implements SaleItemDao {
 		}
 	}
 
+
 	@Override
 	public void update(SaleItem obj) {
 		PreparedStatement st = null;
 		try {
+			// Buscar quantidade anterior
+			SaleItem antigo = findById(obj.getId());
+			int quantidadeAnterior = antigo.getQuantity();
+
+			// Calcular diferença
+			int diferenca = obj.getQuantity() - quantidadeAnterior;
+
+			// Verificar estoque
+			Product product = obj.getProduct();
+			int estoqueAtual = product.getQuantityStock();
+
+			if (diferenca > 0 && estoqueAtual < diferenca) {
+				throw new IllegalStateException("Estoque insuficiente para aumentar a quantidade do produto: " + product.getName());
+			}
+
+			// Atualizar dados
 			st = conn.prepareStatement(
 				"UPDATE sale_items SET id_sale=?, id_product=?, quantity=?, unit_price=?, subtotal=? " +
 				"WHERE id_sale_item=?"
@@ -69,8 +106,11 @@ public class SaleItemDaoJDBC implements SaleItemDao {
 			st.setBigDecimal(4, obj.getUnitPrice());
 			st.setBigDecimal(5, obj.getSubtotal());
 			st.setInt(6, obj.getId());
-
 			st.executeUpdate();
+
+			// Atualizar movimento de estoque (opcional: pode reverter e registrar novo)
+			// Isso pode envolver lógica mais elaborada se houver histórico que precisa ser mantido.
+
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
